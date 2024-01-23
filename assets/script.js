@@ -55,7 +55,7 @@ function timeBlocks (hours) {
         blockRow.append(hourBlock);
 
         var tasks = $("<textarea>");
-        tasks.addClass("description col");
+        tasks.addClass("description col2");
         tasks.attr("data-index", hours[i].hourIndex);
         tasks.text(list[i].tskText);
         blockRow.append(tasks);
@@ -83,3 +83,65 @@ function hourPsnt () {
     };
 }
 
+hourPst ();
+
+function hourPst () {
+    var currentHourNm = currentHour.format("HH");
+    var currentHourIndex = parseInt(currentHourNm);
+
+    for (let i = 0; i < workingHours.length; i++) {
+        if (workingHours[i].hourIndex < currentHourIndex) {
+            var userTasks = $("[data-index='" + workingHours[i].hourIndex + "']");
+            userTasks.addClass("past");
+        };
+    };
+}
+
+hourPst ();
+
+function hourFtr () {
+    var currentHourNm = currentHour.format("HH");
+    var currentHourIndex = parseInt(currentHourNm);
+
+    for (let i = 0; i < workingHours.length; i++) {
+        if (workingHours[i].hourIndex > currentHourIndex) {
+            var userTasks = $("[data-index='" + workingHours[i].hourIndex + "']");
+            userTasks.addClass("future");
+        };
+    };
+}
+
+hourFtr ();
+
+function saveEntry () {
+    var clickedBtn = $(this);
+    var textArea = clickedBtn.closest(".row").find("textarea");
+    var currentUserTask = JSON.parse(localStorage.getItem("tasks"));
+    var hourNumIndex = textArea.data("index");
+
+    if (textArea.val().trim() !== "") {
+        var tskText = textArea.val();
+        var tskTime = hourNumIndex;
+        var listedItems = {tskTime, tskText};
+    }
+    else {
+        alert("task cant be left empty. Please populate task")
+        return;
+    };
+
+    if (!currentUserTask) {
+        currentUserTask = [];
+    };
+
+    for (let i = 0; i < currentUserTask.length; i++) {
+        if (currentUserTask[i].tskTime === hourNumIndex) {
+            currentUserTask.splice(i, 1);
+        };
+    };
+
+    var tasksNew = [...currentUserTask, listedItems];
+    tasksNew.sort((a, b) => a.tskTime-b.tskTime);
+    localStorage.setItem("tasks", JSON.stringify(tasksNew));
+}
+$(".saveBtn").click(saveEntry);
+});
