@@ -2,8 +2,8 @@ $(document).ready(function() {
 
     dayjs.extend(window.dayjs_plugin_advancedFormat)
 
-    var presentHour = dayjs ();
-    var presentDay = dayjs();
+    var currentHour = dayjs ();
+    var currentDay = dayjs();
     var hourDisplay = $("<p>");
     var workingHour = [
         {hourIndex: 1,
@@ -25,10 +25,14 @@ $(document).ready(function() {
         {hourIndex: 9,
         hour: "5pm"},
     ];
-hourDisplay.addClass("presentHour")
+    // var hourDisplay = $("<p>");
+hourDisplay.addClass("currentHour")
 $("header").append(hourDisplay);
 
 // Creating date format
+// var hourDisplay = $("<p>");
+$("#currentDay").text(currentDay.format("[Today is:] dddd[,] MMMM Do"));
+$(".currentHour").text(currentHour.format("[Present Hour:] HH[:00]"));
 
 
 })
