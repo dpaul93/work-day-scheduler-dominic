@@ -8,3 +8,6 @@ The day.js cdn link was added to the HTML in order to allow the library to be pi
 
 ![Alt text](image-1.png)
 
+Live page: https://dpaul93.github.io/work-day-scheduler-dominic/ 
+
+GitHub: https://github.com/dpaul93/work-day-scheduler-dominic
