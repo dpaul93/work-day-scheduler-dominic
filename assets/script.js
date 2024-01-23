@@ -25,12 +25,11 @@ $(document).ready(function() {
         {hourIndex: 9,
         hour: "5pm"},
     ];
-    // var hourDisplay = $("<p>");
+
 hourDisplay.addClass("currentHour")
 $("header").append(hourDisplay);
 
-// Creating date format
-// var hourDisplay = $("<p>");
+
 $("#currentDay").text(currentDay.format("[Today is:] dddd[,] MMMM Do"));
 $(".currentHour").text(currentHour.format("[Present Hour:] HH[:00]"));
 
@@ -45,19 +44,21 @@ function timeBlocks (hours) {
         localStorage.setItem("tasks", JSON.stringify(list));
     };
 
-    for (let i = 0; i < hours.length; i++) {
+    var maxLength = Math.max(hours.length, list.length);
+
+    for (let i = 0; i < maxLength; i++) {
         var blockRow = $("<div>");
         blockRow.addClass("row");
 
         var hourBlock = $("<div>");
         hourBlock.addClass("hour col-1");
-        hourBlock.text(hours[i].hour);
+        hourBlock.text(hours[i]?.hour|| "");
         blockRow.append(hourBlock);
 
         var tasks = $("<textarea>");
-        tasks.addClass("description col2");
-        tasks.attr("data-index", hours[i].hourIndex);
-        tasks.text(list[i].tskText);
+        tasks.addClass("description col");
+        tasks.attr("data-index", i);
+        tasks.text(list[i]?.tskText || "");
         blockRow.append(tasks);
 
         var save = $("<button><i>");
@@ -77,13 +78,13 @@ function hourPsnt () {
 
     for (let i = 0; i < workingHours.length; i++) {
         if (workingHours[i].hourIndex === currentHourIndex) {
-            var userTasks = $(["data-index='"] + workingHours[i].hourIndex + "']");
+            var userTasks = $("[data-index='" + workingHours[i].hourIndex + "']");
             userTasks.addClass("present");
         };
     };
 }
 
-hourPst ();
+hourPsnt ();
 
 function hourPst () {
     var currentHourNm = currentHour.format("HH");
@@ -125,7 +126,7 @@ function saveEntry () {
         var listedItems = {tskTime, tskText};
     }
     else {
-        alert("task cant be left empty. Please populate task")
+        alert("Calendar Empty... Either you're on holiday or slacking off. Lets get some tasks in!")
         return;
     };
 
