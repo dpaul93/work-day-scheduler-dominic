@@ -1,148 +1,138 @@
-$(document).ready(function() {
+$(document).ready(function () {
+  dayjs.extend(window.dayjs_plugin_advancedFormat);
 
-    dayjs.extend(window.dayjs_plugin_advancedFormat)
+  var currentHour = dayjs();
+  var currentDay = dayjs();
+  var hourDisplay = $("<p>");
+  var workingHours = [
+    { hourIndex: 1, hour: "9am" },
+    { hourIndex: 2, hour: "10am" },
+    { hourIndex: 3, hour: "11am" },
+    { hourIndex: 4, hour: "12pm" },
+    { hourIndex: 5, hour: "1pm" },
+    { hourIndex: 6, hour: "2pm" },
+    { hourIndex: 7, hour: "3pm" },
+    { hourIndex: 8, hour: "4pm" },
+    { hourIndex: 9, hour: "5pm" },
+  ];
 
-    var currentHour = dayjs ();
-    var currentDay = dayjs();
-    var hourDisplay = $("<p>");
-    var workingHours = [
-        {hourIndex: 1,
-        hour: "9am"},
-        {hourIndex: 2,
-        hour: "10am"},
-        {hourIndex: 3,
-        hour: "11am"},
-        {hourIndex: 4,
-        hour: "12pm"},
-        {hourIndex: 5,
-        hour: "1pm"},
-        {hourIndex: 6,
-        hour: "2pm"},
-        {hourIndex: 7,
-        hour: "3pm"},
-        {hourIndex: 8,
-        hour: "4pm"},
-        {hourIndex: 9,
-        hour: "5pm"},
-    ];
+  hourDisplay.addClass("currentHour");
+  $("header").append(hourDisplay);
 
-hourDisplay.addClass("currentHour")
-$("header").append(hourDisplay);
+  $("#currentDay").text(currentDay.format("[Today is:] dddd[,] MMMM Do"));
+  $(".currentHour").text(currentHour.format("[Present Hour:] HH[:00]"));
 
-
-$("#currentDay").text(currentDay.format("[Today is:] dddd[,] MMMM Do"));
-$(".currentHour").text(currentHour.format("[Present Hour:] HH[:00]"));
-
-function timeBlocks (hours) {
+  function timeBlocks(hours) {
     var list = JSON.parse(localStorage.getItem("tasks"));
 
     if (!list) {
-        list = [];
-        for (let i = 1; i <= 9; i++) {
-            list.push({tskTime: i, tskText: ""})
-        };
-        localStorage.setItem("tasks", JSON.stringify(list));
-    };
+      list = [];
+      for (let i = 1; i <= 9; i++) {
+        list.push({ tskTime: i, tskText: "" });
+      }
+      localStorage.setItem("tasks", JSON.stringify(list));
+    }
 
     var maxLength = Math.max(hours.length, list.length);
 
     for (let i = 0; i < maxLength; i++) {
-        var blockRow = $("<div>");
-        blockRow.addClass("row");
+      var blockRow = $("<div>");
+      blockRow.addClass("row");
 
-        var hourBlock = $("<div>");
-        hourBlock.addClass("hour col-1");
-        hourBlock.text(hours[i]?.hour|| "");
-        blockRow.append(hourBlock);
+      var hourBlock = $("<div>");
+      hourBlock.addClass("hour col-1");
+      hourBlock.text(hours[i]?.hour || "");
+      blockRow.append(hourBlock);
 
-        var tasks = $("<textarea>");
-        tasks.addClass("description col");
-        tasks.attr("data-index", i);
-        tasks.text(list[i]?.tskText || "");
-        blockRow.append(tasks);
+      var tasks = $("<textarea>");
+      tasks.addClass("description col");
+      tasks.attr("data-index", i);
+      tasks.text(list[i]?.tskText || "");
+      blockRow.append(tasks);
 
-        var save = $("<button><i>");
-        save.addClass("saveBtn col-1 fas fa-save fa-2x");
-        save.css("color:#ffffff");
-        blockRow.append(save);
+      var save = $("<button><i>");
+      save.addClass("saveBtn col-1 fas fa-save fa-2x");
+      save.css("color:#ffffff");
+      blockRow.append(save);
 
-        $(".container").append(blockRow);
-    };
-}
+      $(".container").append(blockRow);
+    }
+  }
 
-timeBlocks (workingHours);
+  timeBlocks(workingHours);
 
-function hourPsnt () {
+  function hourPsnt() {
     var currentHourNm = currentHour.format("HH");
     var currentHourIndex = parseInt(currentHourNm);
 
     for (let i = 0; i < workingHours.length; i++) {
-        if (workingHours[i].hourIndex === currentHourIndex) {
-            var userTasks = $("[data-index='" + workingHours[i].hourIndex + "']");
-            userTasks.addClass("present");
-        };
-    };
-}
+      if (workingHours[i].hourIndex === currentHourIndex) {
+        var userTasks = $("[data-index='" + workingHours[i].hourIndex + "']");
+        userTasks.addClass("present");
+      }
+    }
+  }
 
-hourPsnt ();
+  hourPsnt();
 
-function hourPst () {
+  function hourPst() {
     var currentHourNm = currentHour.format("HH");
     var currentHourIndex = parseInt(currentHourNm);
 
     for (let i = 0; i < workingHours.length; i++) {
-        if (workingHours[i].hourIndex < currentHourIndex) {
-            var userTasks = $("[data-index='" + workingHours[i].hourIndex + "']");
-            userTasks.addClass("past");
-        };
-    };
-}
+      if (workingHours[i].hourIndex < currentHourIndex) {
+        var userTasks = $("[data-index='" + workingHours[i].hourIndex + "']");
+        userTasks.addClass("past");
+      }
+    }
+  }
 
-hourPst ();
+  hourPst();
 
-function hourFtr () {
+  function hourFtr() {
     var currentHourNm = currentHour.format("HH");
     var currentHourIndex = parseInt(currentHourNm);
 
     for (let i = 0; i < workingHours.length; i++) {
-        if (workingHours[i].hourIndex > currentHourIndex) {
-            var userTasks = $("[data-index='" + workingHours[i].hourIndex + "']");
-            userTasks.addClass("future");
-        };
-    };
-}
+      if (workingHours[i].hourIndex > currentHourIndex) {
+        var userTasks = $("[data-index='" + workingHours[i].hourIndex + "']");
+        userTasks.addClass("future");
+      }
+    }
+  }
 
-hourFtr ();
+  hourFtr();
 
-function saveEntry () {
+  function saveEntry() {
     var clickedBtn = $(this);
     var textArea = clickedBtn.closest(".row").find("textarea");
     var currentUserTask = JSON.parse(localStorage.getItem("tasks"));
     var hourNumIndex = textArea.data("index");
 
     if (textArea.val().trim() !== "") {
-        var tskText = textArea.val();
-        var tskTime = hourNumIndex;
-        var listedItems = {tskTime, tskText};
+      var tskText = textArea.val();
+      var tskTime = hourNumIndex;
+      var listedItems = { tskTime, tskText };
+    } else {
+      alert(
+        "Calendar Empty... Either you're on holiday or slacking off. Lets get some tasks in!"
+      );
+      return;
     }
-    else {
-        alert("Calendar Empty... Either you're on holiday or slacking off. Lets get some tasks in!")
-        return;
-    };
 
     if (!currentUserTask) {
-        currentUserTask = [];
-    };
+      currentUserTask = [];
+    }
 
     for (let i = 0; i < currentUserTask.length; i++) {
-        if (currentUserTask[i].tskTime === hourNumIndex) {
-            currentUserTask.splice(i, 1);
-        };
-    };
+      if (currentUserTask[i].tskTime === hourNumIndex) {
+        currentUserTask.splice(i, 1);
+      }
+    }
 
     var tasksNew = [...currentUserTask, listedItems];
-    tasksNew.sort((a, b) => a.tskTime-b.tskTime);
+    tasksNew.sort((a, b) => a.tskTime - b.tskTime);
     localStorage.setItem("tasks", JSON.stringify(tasksNew));
-}
-$(".saveBtn").click(saveEntry);
+  }
+  $(".saveBtn").click(saveEntry);
 });
