@@ -5,15 +5,15 @@ $(document).ready(function () {
   var currentDay = dayjs();
   var hourDisplay = $("<p>");
   var workingHours = [
-    { hourIndex: 1, hour: "9am" },
-    { hourIndex: 2, hour: "10am" },
-    { hourIndex: 3, hour: "11am" },
-    { hourIndex: 4, hour: "12pm" },
-    { hourIndex: 5, hour: "1pm" },
-    { hourIndex: 6, hour: "2pm" },
-    { hourIndex: 7, hour: "3pm" },
-    { hourIndex: 8, hour: "4pm" },
-    { hourIndex: 9, hour: "5pm" },
+    { hourIndex: 0, hour: "9am" },
+    { hourIndex: 1, hour: "10am" },
+    { hourIndex: 2, hour: "11am" },
+    { hourIndex: 3, hour: "12pm" },
+    { hourIndex: 4, hour: "1pm" },
+    { hourIndex: 5, hour: "2pm" },
+    { hourIndex: 6, hour: "3pm" },
+    { hourIndex: 7, hour: "4pm" },
+    { hourIndex: 8, hour: "5pm" },
   ];
 
   hourDisplay.addClass("currentHour");
